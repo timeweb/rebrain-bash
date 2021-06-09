@@ -1,0 +1,29 @@
+server {
+    listen 80;
+    server_name example.org www.example.org;
+    root /srv/example.org/public;
+    index index.html;
+
+    location / {
+        # Proxy to uWSGI.
+        #include uwsgi_params;
+        #uwsgi_pass unix:/run/example.org.sock;
+
+        # Proxy to gunicorn.
+        #proxy_pass http://unix:/run/gunicorn.sock;
+
+        # Proxy to TCP port.
+        #proxy_pass http://127.0.0.1:8080;
+
+        # Headers.
+        #proxy_set_header Host $host;
+        #proxy_set_header X-Forwarded-Host $server_name;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+    }
+
+    location ~* \.(css|js|jpg|jpeg|png|gif|woff|ttf)$ {
+        expires 1M;
+        add_header Cache-Control public;
+    }
+}

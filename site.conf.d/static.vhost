@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name example.org www.example.org;
+    root /srv/example.org/public;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~* \.(css|js|jpg|jpeg|png|gif|woff|ttf)$ {
+        expires 1M;
+        add_header Cache-Control public;
+    }
+}
